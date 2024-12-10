@@ -169,6 +169,12 @@ async def upload(bot: Client, m: Message):
                 cmd = f'yt-dlp -o "{name}.mp4" "{url}"'
             else:
                 cmd = f'yt-dlp -f "{ytf}" "{url}" -o "{name}.mp4"'
+            cookies_file = "cookies.txt"
+            if os.path.exists(cookies_file):
+                cmd = f'{cmd} --cookies {cookies_file}'
+            else:
+                print("Cookies file not found. Make sure 'cookies.txt' is in the same directory as this script.")
+                return
 
             try:  
                 
