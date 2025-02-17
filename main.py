@@ -168,12 +168,10 @@ async def upload(bot: Client, m: Message):
             if "jw-prod" in url:
                 cmd = f'yt-dlp -o "{name}.mp4" "{url}"'
             else:
-                cmd = f'yt-dlp -f "{ytf}" "{url}" -o "{name}.mp4"'
+                 cmd = f'yt-dlp -f "{ytf}" "{url}" -o "{name}.mp4" --no-check-certificate --retry 5 --retries 10 --concurrent-fragments 8'
             cookies_file = "cookies.txt"
             if os.path.exists(cookies_file):
                 cmd = f'{cmd} --cookies {cookies_file}'
-            else:
-                cmd = f"yt-dlp --verbose -f '{ytf}' '{url}' -o '{name}.mp4' --no-check-certificate --retry 5 --retries 10 --concurrent-fragments 8"
             else:
                 print("Cookies file not found. Make sure 'cookies.txt' is in the same directory as this script.")
                 return
