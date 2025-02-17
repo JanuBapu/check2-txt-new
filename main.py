@@ -160,23 +160,10 @@ async def upload(bot: Client, m: Message):
             name1 = links[i][0].replace("\t", "").replace(":", "").replace("/", "").replace("+", "").replace("#", "").replace("|", "").replace("@", "").replace("*", "").replace(".", "").replace("https", "").replace("http", "").strip()
             name = f'{str(count).zfill(3)}) {name1[:60]}'
 
-           if "embed" in url:
-                ytf = f"bestvideo[height<={raw_text2}]+bestaudio/best[height<={raw_text2}]"
-            elif "youtube" in url:
-                ytf = f"bestvideo[height<={raw_text2}][ext=mp4]+bestaudio[ext=m4a]/best[height<={raw_text2}][ext=mp4]"
+            if "youtu" in url:
+                ytf = f"b[height<={raw_text2}][ext=mp4]/bv[height<={raw_text2}][ext=mp4]+ba[ext=m4a]/b[ext=mp4]"
             else:
                 ytf = f"b[height<={raw_text2}]/bv[height<={raw_text2}]+ba/b/bv+ba"
-
-
-            if "jw-prod" in url and (url.endswith(".mp4") or "Expires=" in url):
-                cmd = f'yt-dlp -o "{name}.mp4" "{url}"'
-
-            #if "jw-prod" in url and (url.endswith(".mp4") or "Expires=" in url):
-                #user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"             
-                #cmd = f'yt-dlp -o "{name}.mp4" --user-agent "{user_agent}" "{url}"'
-
-            else:
-                cmd = f"yt-dlp --verbose -f '{ytf}' '{url}' -o '{name}.mp4' --no-check-certificate --retry 5 --retries 10 --concurrent-fragments 8"
 
             if "jw-prod" in url:
                 cmd = f'yt-dlp -o "{name}.mp4" "{url}"'
@@ -185,6 +172,8 @@ async def upload(bot: Client, m: Message):
             cookies_file = "cookies.txt"
             if os.path.exists(cookies_file):
                 cmd = f'{cmd} --cookies {cookies_file}'
+            else:
+                cmd = f"yt-dlp --verbose -f '{ytf}' '{url}' -o '{name}.mp4' --no-check-certificate --retry 5 --retries 10 --concurrent-fragments 8"
             else:
                 print("Cookies file not found. Make sure 'cookies.txt' is in the same directory as this script.")
                 return
